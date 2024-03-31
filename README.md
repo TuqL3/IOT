@@ -1,3 +1,17 @@
+### Table of contents
+
+1. [Clone](#clone)
+2. [Backend](#backend)
+    - [Installation](#installation)
+    - [Config](#config)
+    - [Running](#running)
+3. [Frontend](#frontend)
+    - [Installation](#installation-1)
+    - [Running](#running-1)
+4. [Hardware](#hardware)
+    - [Installation](#installation-2)
+    - [Config](#config-1)
+
 ### Clone
 
 ```bash
