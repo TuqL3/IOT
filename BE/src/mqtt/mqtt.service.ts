@@ -7,6 +7,7 @@ import { ActionHistory } from './entities/action-history.entity';
 import { format } from 'date-fns';
 import { DataSensor } from './entities/data-sensor.entity';
 import { Repository } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MqttService {
@@ -17,14 +18,15 @@ export class MqttService {
     private actionRepo: Repository<ActionHistory>,
     @InjectRepository(DataSensor)
     private datasensorRepo: Repository<DataSensor>,
+    private configService: ConfigService,
   ) {
-    const username = 'levantung';
-    const password = 'levantung';
+    const username = configService.get('MQTT_USERNAME');
+    const password = configService.get('MQTT_PASSWORD');
     const options: mqtt.IClientOptions = {
       username,
       password,
     };
-    this.client = mqtt.connect('mqtt://localhost:1885', options);
+    this.client = mqtt.connect(configService.get('MQTT_URL'), options);
     this.client.on('connect', () => {
       console.log('MQTT Connected');
       this.subscribeToDataTopic();
@@ -146,15 +148,6 @@ export class MqttService {
     sortBy: string,
     sortOrder: 'ASC' | 'DESC' = 'ASC',
   ) {
-    let total: number;
-    let data: ActionHistory[];
-
-    if (filter !== 'all') {
-      total = await this.actionRepo.count({ where: { device: filter } });
-    } else {
-      total = await this.actionRepo.count();
-    }
-
     let queryBuilder = this.actionRepo.createQueryBuilder('action_history');
 
     if (filter !== 'all') {
@@ -192,8 +185,8 @@ export class MqttService {
     } else {
       queryBuilder = queryBuilder.orderBy('action_history.id', sortOrder);
     }
-
-    data = await queryBuilder
+    const total = await queryBuilder.getCount();
+    const data = await queryBuilder
       .skip((page - 1) * limit)
       .take(limit)
       .getMany();
@@ -226,7 +219,13 @@ export class MqttService {
     let queryBuilder = this.datasensorRepo.createQueryBuilder('data_sensor');
 
     if (search) {
-      if (search.length > 5) {
+      const searchValue = parseFloat(search);
+      if (!isNaN(searchValue)) {
+        queryBuilder = queryBuilder.where(
+          '(data_sensor.hum >= :searchValue AND data_sensor.hum <= :searchValue) OR (data_sensor.tem >= :searchValue AND data_sensor.tem <= :searchValue) OR (data_sensor.lux >= :searchValue AND data_sensor.lux <= :searchValue)',
+          { searchValue },
+        );
+      } else {
         const searchDate = new Date(search);
         const nextDay = new Date(
           new Date(searchDate).setDate(searchDate.getDate() + 1),
@@ -238,15 +237,8 @@ export class MqttService {
             end: nextDay,
           },
         );
-      } else {
-        const searchValue = parseFloat(search);
-        queryBuilder = queryBuilder.where(
-          '(data_sensor.hum >= :searchValue - 1 AND data_sensor.hum <= :searchValue + 1) OR (data_sensor.tem >= :searchValue - 1 AND data_sensor.tem <= :searchValue + 1) OR (data_sensor.lux >= :searchValue - 1 AND data_sensor.lux <= :searchValue + 1)',
-          { searchValue },
-        );
       }
     }
-
     if (filter && ['hum', 'tem', 'lux'].includes(filter)) {
       switch (filter) {
         case 'hum':
@@ -277,7 +269,7 @@ export class MqttService {
       }
     }
 
-    let orderByClause: { [key: string]: 'ASC' | 'DESC' } = {};
+    const orderByClause: { [key: string]: 'ASC' | 'DESC' } = {};
     switch (sortBy) {
       case 'createdAt':
         orderByClause['data_sensor.createdAt'] = sortOrder as 'ASC' | 'DESC';

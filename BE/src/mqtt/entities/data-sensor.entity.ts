@@ -1,14 +1,18 @@
 import { Base } from 'src/common/base';
 import { Column, Entity } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class DataSensor extends Base {
-  @Column({type: 'float'})
+  @ApiProperty({ description: 'tem' })
+  @Column({ type: 'float' })
   tem: number;
 
-  @Column({type: 'float'})
+  @ApiProperty({ description: 'hum' })
+  @Column({ type: 'float' })
   hum: number;
 
-  @Column({type: 'float'})
+  @ApiProperty({ description: 'lux' })
+  @Column({ type: 'float' })
   lux: number;
 }

@@ -6,7 +6,7 @@ import { ActionHistory } from './entities/action-history.entity';
 import { DataSensor } from './entities/data-sensor.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ActionHistory,DataSensor])],
+  imports: [TypeOrmModule.forFeature([ActionHistory, DataSensor])],
   controllers: [MqttController],
   providers: [MqttService],
 })

@@ -5,18 +5,25 @@ import { MqttModule } from './mqtt/mqtt.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ActionHistory } from './mqtt/entities/action-history.entity';
 import { DataSensor } from './mqtt/entities/data-sensor.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
+    }),
     TypeOrmModule.forRootAsync({
-      useFactory: () => ({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: 'localhost',
-        port: 5432,
-        username: 'postgres',
-        password: '123456',
-        database: 'iot',
-        entities: [ActionHistory,DataSensor],
+        host: configService.get('DB_HOST'),
+        port: configService.get('DB_PORT'),
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_DATABASE'),
+        entities: [ActionHistory, DataSensor],
         synchronize: true,
       }),
     }),

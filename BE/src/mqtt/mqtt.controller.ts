@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { MqttService } from './mqtt.service';
 import { ControlDeviceDto } from './dto/control-device';
 import {
@@ -174,6 +165,8 @@ export class MqttController {
   @ApiQuery({
     name: 'search',
     type: String,
+    allowEmptyValue: true,
+    required: false,
     description: 'Search field: [createdAt, action]',
     examples: {
       Action: {
@@ -197,6 +190,10 @@ export class MqttController {
       Quat: {
         value: 'quat',
         description: 'Filter by quat',
+      },
+      All: {
+        value: 'all',
+        description: 'All',
       },
     },
   })
@@ -331,6 +328,8 @@ export class MqttController {
   @ApiQuery({
     name: 'search',
     type: String || Number,
+    required: false,
+    allowEmptyValue: true,
     description: 'Search field: [createdAt, hum, tem, lux]',
     examples: {
       Temperature: {
