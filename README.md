@@ -10,7 +10,7 @@
     - [Installation](#installation-1)
     - [Running](#running-1)
 4. [Hardware](#hardware)
-
+5. [API DOCS](#api-docs)
 ### Clone
 
 ```bash
@@ -82,4 +82,9 @@ mqtt_server = 'your server'
 mqtt_username = 'your username'
 mqtt_password = 'your password'
 port = 'your port' (Ctrl + F: 1885)
+```
+
+### API DOCS
+```
+http://${your host}:${your port}/api-docs
 ```
