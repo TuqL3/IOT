@@ -1,3 +1,4 @@
+# Project IOT
 ### Table of contents
 
 1. [Clone](#clone)
@@ -9,8 +10,6 @@
     - [Installation](#installation-1)
     - [Running](#running-1)
 4. [Hardware](#hardware)
-    - [Installation](#installation-2)
-    - [Config](#config-1)
 
 ### Clone
 
@@ -29,12 +28,25 @@ $ npm i
 ---
 ### Config
 Create file `.env` from `.env.example`
+```
+DB_HOST = 'your host'
+DB_PORT = 'your port'
+DB_USERNAME = 'your username'
+DB_PASSWORD = 'your password'
+DB_DATABASE = 'your database'
+
+MQTT_USERNAME = 'your broker username'
+MQTT_PASSWORD = 'your broker password'
+MQTT_URL = 'your broker url'
+```
 
 ---
 ### Running
 ```bash
 $ npm run start:dev
 ```
+Terminal
+![img_3.png](img_3.png)
 
 ---
 ### Frontend
@@ -51,18 +63,17 @@ $ npm i
 ```bash
 $ npm run dev
 ```
-
+Dashboard
+![img.png](img.png)
+Data sensor
+![img_1.png](img_1.png)
+Action history
+![img_2.png](img_2.png)
 ---
 ### HARDWARE
+1. Install Arduino
+2. Config
 
----
-### Installation
-```bash
-$ cd hw
-```
-
----
-### Config
 
 ```
 ssid = 'your ssid'
