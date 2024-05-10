@@ -106,9 +106,9 @@ export class MqttService {
 
     this.client.publish(controlDeviceDto.topic, controlDeviceDto.message);
     return new Promise((resolve, reject) => {
-      const topic = controlDeviceDto.topic === 'den' ? 'ttden' : 'ttquat';
+      // const topic = controlDeviceDto.topic === 'den' ? 'ttden' : 'ttquat';
 
-      // const topic = controlDeviceDto.topic === 'den' ? 'ttden' : (controlDeviceDto.topic === 'quat' ? 'ttquat' : 'ttdieuhoa');
+      const topic = controlDeviceDto.topic === 'den' ? 'ttden' : (controlDeviceDto.topic === 'quat' ? 'ttquat' : 'ttdieuhoa');
 
       const handleData = (data) => {
         this.client.unsubscribe(topic);

@@ -116,23 +116,23 @@ export default function Home() {
               </div>
             </ResizablePanel>
             <ResizableHandle />
-            <ResizablePanel defaultSize={33}>
+            <ResizablePanel defaultSize={22}>
               <div className="flex h-full items-center justify-center p-6">
                 <Light />
               </div>
             </ResizablePanel>
             <ResizableHandle />
-            <ResizablePanel defaultSize={33}>
+            <ResizablePanel defaultSize={22}>
               <div className="flex h-full items-center justify-center p-6">
                 <Fanctrl />
               </div>
             </ResizablePanel>
-            {/* <ResizableHandle />
+            <ResizableHandle />
             <ResizablePanel defaultSize={22}>
               <div className="flex h-full items-center justify-center p-6">
                 <Aircondition />
               </div>
-            </ResizablePanel> */}
+            </ResizablePanel>
           </ResizablePanelGroup>
         </ResizablePanel>
       </ResizablePanelGroup>
