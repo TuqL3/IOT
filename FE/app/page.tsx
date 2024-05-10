@@ -13,6 +13,7 @@ import Humidity from '@/components/Humidity';
 import Lux from '@/components/Lux';
 import { useEffect, useState } from 'react';
 import { newRequest } from '@/lib/newRequest';
+import { Aircondition } from '@/components/Aircondition';
 export type DataItem = {
   createdAt: string;
   hum: number;
@@ -25,9 +26,9 @@ export default function Home() {
     const intervalId = setInterval(async () => {
       try {
         const res = await newRequest.get('/data');
-        const reversedData = res.data.map((item:DataItem) => ({
+        const reversedData = res.data.map((item: DataItem) => ({
           ...item,
-          createdAt: formatDate(item.createdAt) 
+          createdAt: formatDate(item.createdAt),
         }));
         setData(reversedData);
       } catch (error) {
@@ -77,11 +78,11 @@ export default function Home() {
                   <div
                     className={`h-full  ${
                       data[data.length - 1]?.hum < 30
-                        ? 'bg-gradient-to-tr from-green-400 to-red-300 p-4'
+                        ? 'bg-gradient-to-tr from-orange-500 to-red-300 p-4'
                         : data[data.length - 1]?.hum >= 30 &&
                           data[data.length - 1]?.hum <= 50
-                        ? 'bg-gradient-to-tr from-yellow-400 to-green-400 p-4'
-                        : 'bg-gradient-to-tr from-red-400 to-yellow-400 p-4'
+                        ? 'bg-gradient-to-tr from-red-300 to-violet-400 p-4'
+                        : 'bg-gradient-to-tr from-violet-400 to-green-400 p-4'
                     }`}
                   >
                     <Humidity data={data[data.length - 1]} />
@@ -92,7 +93,7 @@ export default function Home() {
             <ResizableHandle />
             <ResizablePanel defaultSize={66}>
               <div className="flex h-full items-center justify-center p-6">
-                <LineChart data={data}  />
+                <LineChart data={data} />
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>
@@ -103,12 +104,12 @@ export default function Home() {
             <ResizablePanel defaultSize={33}>
               <div
                 className={`h-full  ${
-                  data[data.length - 1]?.lux < 30
-                    ? 'bg-gradient-to-tr from-green-400 to-red-300 p-4'
-                    : data[data.length - 1]?.lux >= 30 &&
-                      data[data.length - 1]?.lux <= 50
-                    ? 'bg-gradient-to-tr from-yellow-400 to-green-400 p-4'
-                    : 'bg-gradient-to-tr from-red-400 to-yellow-400 p-4'
+                  data[data.length - 1]?.lux < 300
+                    ? 'bg-gradient-to-tr from-yellow-400 to-red-300 p-4'
+                    : data[data.length - 1]?.lux >= 300 &&
+                      data[data.length - 1]?.lux <= 800
+                    ? 'bg-gradient-to-tr from-red-400 to-blue-400 p-4'
+                    : 'bg-gradient-to-tr from-blue-400 to-red-400 p-4'
                 }`}
               >
                 <Lux data={data[data.length - 1]} />
@@ -126,6 +127,12 @@ export default function Home() {
                 <Fanctrl />
               </div>
             </ResizablePanel>
+            {/* <ResizableHandle />
+            <ResizablePanel defaultSize={22}>
+              <div className="flex h-full items-center justify-center p-6">
+                <Aircondition />
+              </div>
+            </ResizablePanel> */}
           </ResizablePanelGroup>
         </ResizablePanel>
       </ResizablePanelGroup>
