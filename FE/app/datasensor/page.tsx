@@ -16,6 +16,7 @@ import { columnsLux } from './columnsLux';
 import { SortTemp } from '@/components/sortTemp';
 import { SortHum } from '@/components/sortHum';
 import { SortLux } from '@/components/sortLux';
+import { SearchFieldsdtsensor } from '@/components/searchFieldsdtsensor';
 
 interface DataObj {
   limit?: string;
@@ -29,6 +30,7 @@ export default function DataSensorPage() {
   const [filter, setFilter] = useState('');
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
+  const [searchField, setSearchField] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [sortOrder, setSortOrder] = useState('');
 
@@ -42,8 +44,8 @@ export default function DataSensorPage() {
           url += `&sortBy=${sortBy}&sortOrder=${sortOrder}`;
         }
 
-        if (search) {
-          url += `&search=${search}`;
+        if (search && searchField) {
+          url += `&search=${search}&searchField=${searchField}`;
         }
 
         const res = await newRequest.get(url);
@@ -55,13 +57,14 @@ export default function DataSensorPage() {
       }
     };
     getData();
-  }, [page, search, filter, sortBy, sortOrder, search]);
+  }, [page, search, filter, sortBy, sortOrder, search,searchField]);
 
   return (
     <div className="container mx-auto py-10">
       <h1 className="font-bold text-xl mb-2">Data sensor</h1>
       <div className="flex items-center gap-4">
         <Search setSearch={setSearch} />
+        <SearchFieldsdtsensor setSearchField={setSearchField} />
         <Filterdtsensor setFilter={setFilter} />
         <SortActionId setSortBy={setSortBy} setSortOrder={setSortOrder} />
         <SortActionTime setSortBy={setSortBy} setSortOrder={setSortOrder} />

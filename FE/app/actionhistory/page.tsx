@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import Pagnination from '@/components/Pagnination';
 import { SortActionId } from '@/components/sortactionId';
 import { SortActionTime } from '@/components/sortactionTime';
+import { SearchFieldsahis } from '@/components/searchFieldsahis';
 
 interface DataObj {
   limit?: string;
@@ -22,6 +23,7 @@ export default function ActionHistoryPage() {
   const [filter, setFilter] = useState('');
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
+  const [searchField, setSearchField] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [sortOrder, setSortOrder] = useState('');
 
@@ -35,8 +37,8 @@ export default function ActionHistoryPage() {
           url += `&sortBy=${sortBy}&sortOrder=${sortOrder}`;
         }
 
-        if (search) {
-          url += `&search=${search}`;
+        if (search && searchField) {
+          url += `&search=${search}$searchField=${searchField}`;
         }
 
         const res = await newRequest.get(url);
@@ -48,7 +50,7 @@ export default function ActionHistoryPage() {
       }
     };
     getData();
-  }, [page, search, filter, sortBy, sortOrder,search]);
+  }, [page, search, filter, sortBy, sortOrder,search, searchField]);
 
 
   return (
@@ -56,6 +58,7 @@ export default function ActionHistoryPage() {
       <h1 className="font-bold text-xl mb-2">Action history</h1>
       <div className="flex items-center gap-4">
         <Search setSearch={setSearch} />
+        <SearchFieldsahis setSearchField={setSearchField} />
         <Filterachis setFilter={setFilter} />
         <SortActionId setSortBy={setSortBy} setSortOrder={setSortOrder} />
         <SortActionTime setSortBy={setSortBy} setSortOrder={setSortOrder} />

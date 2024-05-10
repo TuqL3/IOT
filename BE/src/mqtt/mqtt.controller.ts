@@ -169,13 +169,31 @@ export class MqttController {
     required: false,
     description: 'Search field: [createdAt, action]',
     examples: {
-      Action: {
+      On: {
         value: 'on',
-        description: 'Search field: action',
       },
-      Date: {
+      '2024-03-16': {
         value: '2024-03-16',
-        description: 'Search field: createdAt',
+      },
+      Den: {
+        value: 'den',
+      },
+    },
+  })
+  @ApiQuery({
+    name: 'searchField',
+    type: String,
+    allowEmptyValue: true,
+    required: false,
+    examples: {
+      Action: {
+        value: 'action',
+      },
+      CreatedAt: {
+        value: 'createdAt',
+      },
+      Device: {
+        value: 'device',
       },
     },
   })
@@ -275,8 +293,9 @@ export class MqttController {
   })
   async getActionHistory(
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 5,
+    @Query('limit') limit: number = 10,
     @Query('search') search: string = '',
+    @Query('searchField') searchField: string = '',
     @Query('filter') filter: string = '',
     @Query('sortBy') sortBy: string = '',
     @Query('sortOrder') sortOrder: 'ASC' | 'DESC' = 'ASC',
@@ -285,6 +304,7 @@ export class MqttController {
       page,
       limit,
       search,
+      searchField,
       filter,
       sortBy,
       sortOrder,
@@ -330,23 +350,38 @@ export class MqttController {
     type: String || Number,
     required: false,
     allowEmptyValue: true,
-    description: 'Search field: [createdAt, hum, tem, lux]',
     examples: {
       Temperature: {
         value: 26,
-        description: 'Search field: tem',
       },
       Humidity: {
-        value: 80,
-        description: 'Search field: hum',
+        value: 90,
       },
       Lux: {
-        value: 800,
-        description: 'Search field: lux',
+        value: 668,
       },
       CreatedAt: {
         value: '2024-03-16',
-        description: 'Search field: createdAt',
+      },
+    },
+  })
+  @ApiQuery({
+    name: 'searchField',
+    type: String,
+    allowEmptyValue: true,
+    required: false,
+    examples: {
+      CreatedAt: {
+        value: 'createdAt',
+      },
+      Tem: {
+        value: 'tem',
+      },
+      Hum: {
+        value: 'hum',
+      },
+      Lux: {
+        value: 'lux',
       },
     },
   })
@@ -457,8 +492,9 @@ export class MqttController {
   })
   async getDataSensor(
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 5,
+    @Query('limit') limit: number = 10,
     @Query('search') search: string = '',
+    @Query('searchField') searchField: string = '',
     @Query('filter') filter: string = '',
     @Query('sortBy') sortBy: string = '',
     @Query('sortOrder') sortOrder: 'ASC' | 'DESC' = 'ASC',
@@ -467,6 +503,7 @@ export class MqttController {
       page,
       limit,
       search,
+      searchField,
       filter,
       sortBy,
       sortOrder,
